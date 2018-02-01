@@ -15,8 +15,6 @@ Enter -h or --help would give following information:
 
 -r --reference Your reference file (in gbk or gbf format)
 
--o --out       The output file name (Default: the same name as your query file)
-
 The output format would be as following:
 
 File_name chromosome pN pS pN/pS dN dS dN/dS
