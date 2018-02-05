@@ -142,6 +142,7 @@ def dnds(seq1, seq2):
 
 
 def snp_in_gene(file, record, pos):
+    # Confirm whether an SNP in a gene
     output = None
     for records in SeqIO.parse(file, "genbank"):
         if record == records.id:
@@ -153,6 +154,7 @@ def snp_in_gene(file, record, pos):
 
 
 def get_new_sequence(file, record, input, pos):
+    # Predict new sequence where SNP occurs
     for records in SeqIO.parse(file, "genbank"):
         if record == records.id:
             for feature in records.features:
