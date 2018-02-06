@@ -3,7 +3,7 @@ This is a small program for dN/dS ratio calculation based on VCF file and refere
 
 Most of the functions in this program are mainly based on codes from other people. Thanks to Mr. Adel Qalieh who wrote 'dN/dS Calculator' which is available from https://github.com/adelq/dnds.
 
-To use this program you need to input a VCF file to specify your SNP (only SNP is accept! no indel allow!) and a genbank file in gbk/gbf format to specify positions of genes.
+To use this program you need to input a VCF file (or a gd file given by program Breseq) to specify your SNP (only SNP is accept! no indel allow!) and a genbank file in gbk/gbf format to specify positions of genes.
 
 The mainly usage is as following:
 
@@ -15,10 +15,10 @@ Enter -h or --help would give following information:
 
 -r --reference Your reference file (in gbk or gbf format)
 
+-g --gd        Specify that the query file in in .gd format (optional)
+
 The output format would be as following:
 
 File_name chromosome pN pS pN/pS dN dS dN/dS
 
 Notice that if both dN and dS is 0, the ratio would be '/'; if only dN is 0, the ratio would be '-'; if only dS is 0, the ratio would be '+'.
-
-The codes would be uploaded soon after final modifications.
