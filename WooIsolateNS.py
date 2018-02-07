@@ -178,22 +178,36 @@ if __name__ == '__main__':
                     'Copyleft: Jacky Woo from ZHK Research team, iSynBio, SIAT.')
     parser.add_argument('-q', '--query', type=str, help='Your SNP file (in VCF format)')
     parser.add_argument('-r', '--reference', type=str, help='Your reference file (in gbk or gbf format)')
+    parser.add_argument('-g', '--gd', action='store_false', required=False,
+                        help='Specify that the query file in in .gd format (optional)')
     args = parser.parse_args()
     output = {}
     infh = open(args.query, 'r')
     for line in infh:
-        if '#' not in line:
-            if (len(line.split('\t')[3]) == len(line.split('\t')[4])) and (len(line.split('\t')[4]) == 1):
-                if line.split('\t')[0] not in output:
-                    output.update({line.split('\t')[0]: {}})
-                out = snp_in_gene(args.reference, line.split('\t')[0], int(line.split('\t')[1]))
+        if args.gd:
+            if '#' not in line:
+                if (len(line.split('\t')[3]) == len(line.split('\t')[4])) and (len(line.split('\t')[4]) == 1):
+                    if line.split('\t')[0] not in output:
+                        output.update({line.split('\t')[0]: {}})
+                    out = snp_in_gene(args.reference, line.split('\t')[0], int(line.split('\t')[1]))
+                    if out is not None:
+                        out_name = out.qualifiers['locus_tag'][0]
+                        if out_name not in output[line.split('\t')[0]]:
+                            output[line.split('\t')[0]].update({out_name: [out, []]})
+                        output[line.split('\t')[0]][out_name][1] += [
+                            (int(line.split('\t')[1]), line.split('\t')[4].split('\n')[0])]
+                    out = None
+        else:
+            if line.split('\t')[0] == 'SNP':
+                if line.split('\t')[3] not in output:
+                    output.update({line.split('\t')[3]: {}})
+                out = snp_in_gene(args.reference, line.split('\t')[3], int(line.split('\t')[4]))
                 if out is not None:
-                    out_name = out.qualifiers['locus_tag'][0].split('PROKKA_0')[1]
-                    if out_name not in output[line.split('\t')[0]]:
-                        output[line.split('\t')[0]].update({out_name: [out, []]})
-                    output[line.split('\t')[0]][out_name][1] += [
-                        (int(line.split('\t')[1]), line.split('\t')[4].split(
-                            '\n')[0])]
+                    out_name = out.qualifiers['locus_tag'][0]
+                    if out_name not in output[line.split('\t')[3]]:
+                        output[line.split('\t')[3]].update({out_name: [out, []]})
+                    output[line.split('\t')[3]][out_name][1] += [
+                        (int(line.split('\t')[4]), line.split('\t')[5].split('\n')[0])]
                 out = None
     infh.close()
     for chromosome in output:
